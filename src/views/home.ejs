@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <div>
+      <%- include('header') %>
+
+      <form method="POST" action="/api/url/createUrl">
+        <label for="redirectUrl">Enter Original URL:</label>
+        <input type="text" id="redirectUrl" name="redirectUrl" required />
+        <button type="submit">Generate</button>
+      </form>
+      <% if (locals.shortUrl) { %>
+      <h3>Short URL Generated Successfully!</h3>
+      <p>Short URL: https://localhost:5000/<%= shortUrl %></p>
+      <% } %>
+
+      <% if (locals.urlLists?.length > 0) { %>
+       <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>No. of Visists</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% locals.urlLists.map((url, i) => { %>
+          <tr>
+              <td><%= i + 1 %></td>
+              <td><%= url.redirectUrl %></td>
+              <td><%= url.shortUrl %></td>
+              <td><%= url.analytics.length %></td>
+            </tr>
+          <% }) %>   
+        </tbody>
+      <% } %>
+    </div>
+  </body>
+</html>
