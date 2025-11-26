@@ -7,16 +7,16 @@ const {
   deleteSingleUser,
   userLogin,
 } = require("../controllers/userController");
-const { verifyUserLogin } = require("../middlewares/auth");
+const { verifyUserLogin, RestrictTo } = require("../middlewares/auth");
 
 const router = express.Router();
 
 router.post("/signup", createUser);
 router.post("/login", userLogin);
 router
-  .get("/:id", verifyUserLogin, getSingleUser)
-  .patch("/:id", verifyUserLogin, updateSingleUser)
-  .delete("/:id", verifyUserLogin, deleteSingleUser);
-router.get("/", verifyUserLogin, getAllUsers);
+  .get("/:id", verifyUserLogin, RestrictTo(["admin"]), getSingleUser)
+  .patch("/:id", verifyUserLogin, RestrictTo(["admin"]), updateSingleUser)
+  .delete("/:id", verifyUserLogin, RestrictTo(["admin"]), deleteSingleUser);
+router.get("/", verifyUserLogin, RestrictTo(["admin"]), getAllUsers);
 
 module.exports = router;

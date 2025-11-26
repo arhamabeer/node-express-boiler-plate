@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 import User from "../models/userModel.js";
 import { GenerateToken } from "../helpers/jwtHelper.js";
+import { setUserCookie } from "../helpers/sessionCookieHelper.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -41,11 +43,18 @@ export const userLogin = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email, password: password });
     if (!user) return res.status(401).json({ message: "Invalid credentials." });
-    const token = GenerateToken({ id: user._id, email: user.email });
 
+    //! JWT STATE-LESS AUTHENTICATION
+    const token = GenerateToken({ id: user._id, email: user.email });
     return res
       .status(200)
       .json({ message: "Login successful.", data: { user, token } });
+
+    //! SESSION COOKIES STATE-FULL AUTHENTICATION
+    // const sessionId = uuidv4();
+    // setUserCookie(sessionId, user);
+    // res.cookie("node-test-uid", sessionId);
+    // return res.status(200).json({ message: "Login successful.", data: user });
   } catch (err) {
     res.status(500).json({ message: `Internal server error: ${err.message}` });
   }
