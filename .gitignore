@@ -3,3 +3,8 @@ dist/
 .env
 .vscode/
 access.log
+*access.log.*
+access-*.log
+error.log
+*error.log.*
+access.log.*
