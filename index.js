@@ -4,6 +4,8 @@ const mainRoutes = require("./src/routes/index");
 const staticRoutes = require("./src/routes/staticRoutes");
 const fs = require("fs");
 const path = require("path");
+require("./src/discordBot");
+
 const app = express();
 const PORT = 5000;
 
